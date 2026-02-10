@@ -73,6 +73,8 @@ footer a{color:#06b6d4;text-decoration:none}
   <div class="tab" onclick="showSubject('civics',this)">Civics</div>
   <div class="tab" onclick="showSubject('geography',this)">Geography</div>
   <div class="tab" onclick="showSubject('economics',this)">Economics</div>
+  <div class="tab" onclick="showSubject('english', this)">English</div>
+
 </div>
 
 <div class="container">
@@ -114,7 +116,16 @@ economics:{
 "Money and Credit":"pdf/money-credit.pdf",
 "Globalisation":"pdf/globalisation.pdf",
 "Consumer Rights":"pdf/consumer-rights.pdf"
-}
+},
+ // NEW SUBJECT: English
+  english: {
+    "English Language - Grammar":"pdf/english-language-grammar.pdf",
+    "English Language - Grammar1":"pdf/english-language-grammar1.pdf",
+    "English Language - Writing Skills":"pdf/english-language-writing.pdf",
+    "English Literature - Chapter 1":"pdf/english-lit-ch1.pdf",
+    "English Literature - Chapter 2":"pdf/english-lit-ch2.pdf",
+    "English Literature - Chapter 3":"pdf/english-lit-ch3.pdf"
+  }
 }
 
 let currentSubject="history";
@@ -204,6 +215,3 @@ loadChapters();
 
 </body>
 </html>
-
-
-
