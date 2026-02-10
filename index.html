@@ -8,112 +8,53 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
 
-body{
-  background:#f4f6fb;
-  color:#222;
-  transition:0.3s;
-}
-
-.dark{
-  background:#0f172a;
-  color:#e5e7eb;
-}
+body{background:#f4f6fb;color:#222;transition:0.3s}
+.dark{background:#0f172a;color:#e5e7eb}
 
 /* Header */
 header{
   background:linear-gradient(120deg,#4f46e5,#06b6d4);
-  color:white;
-  text-align:center;
-  padding:25px 10px;
-  font-size:28px;
-  font-weight:bold;
+  color:white;text-align:center;padding:25px;font-size:28px;font-weight:bold;
 }
 
 /* Top Bar */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-  padding:15px 20px;
-  align-items:center;
-}
+.topbar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:15px 20px;align-items:center}
+.searchBox{padding:10px;width:250px;border-radius:8px;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.btn{padding:10px 15px;border:none;border-radius:8px;cursor:pointer;background:#4f46e5;color:white;font-weight:bold}
 
-/* Search */
-.searchBox{
-  padding:10px;
-  width:250px;
-  border-radius:8px;
-  border:none;
-  box-shadow:0 2px 8px rgba(0,0,0,0.15);
-}
-
-/* Buttons */
-.btn{
-  padding:10px 15px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  background:#4f46e5;
-  color:white;
-  font-weight:bold;
-}
-
-.tabs{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:15px;
-  margin:10px;
-}
-
-.tab{
-  padding:10px 20px;
-  background:white;
-  border-radius:25px;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(0,0,0,0.15);
-  font-weight:600;
-}
-
+.tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:15px;margin:10px}
+.tab{padding:10px 20px;background:white;border-radius:25px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.15);font-weight:600}
 .activeTab{background:#4f46e5;color:white}
 
-.container{
-  display:grid;
-  grid-template-columns:300px 1fr;
-  gap:20px;
-  padding:20px;
-}
+.container{display:grid;grid-template-columns:300px 1fr;gap:20px;padding:20px}
 
-.chapterBox, .notes{
-  background:white;
-  border-radius:12px;
-  padding:20px;
+.chapterBox,.notes{
+  background:white;border-radius:12px;padding:20px;
   box-shadow:0 5px 20px rgba(0,0,0,0.1);
-  height:70vh;
-  overflow-y:auto;
+  height:70vh;overflow-y:auto;
 }
-
-.dark .chapterBox, .dark .notes, .dark .tab{background:#1e293b;color:white}
-
-.chapterBtn{
-  display:block;
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border:none;
-  background:#eef2ff;
-  border-radius:8px;
-  cursor:pointer;
-}
+.dark .chapterBox,.dark .notes,.dark .tab{background:#1e293b;color:white}
+.chapterBtn{display:block;width:100%;padding:10px;margin-bottom:10px;border:none;background:#eef2ff;border-radius:8px;cursor:pointer}
 .dark .chapterBtn{background:#334155;color:white}
-
 .downloadBtn{margin-top:15px}
+
+/* Fullscreen mode */
+.fullscreenPDF{
+ position:fixed;top:0;left:0;width:100vw;height:100vh;
+ background:#fff;z-index:9999;padding:10px;
+}
+.fullscreenPDF iframe{height:90vh !important}
+
+/* Footer */
+footer{
+  background:#111;color:#ddd;text-align:center;padding:25px;margin-top:30px;
+}
+footer a{color:#06b6d4;text-decoration:none}
 
 /* Mobile */
 @media(max-width:900px){
-  .container{grid-template-columns:1fr}
-  .searchBox{width:100%}
+.container{grid-template-columns:1fr}
+.searchBox{width:100%}
 }
 </style>
 </head>
@@ -143,8 +84,6 @@ header{
 </div>
 
 <script>
-/* ===== EDIT NOTES HERE ===== */
-
 const data={
 history:{
 "Rise of Nationalism in Europe":"pdf/rise-nationalism-europe.pdf",
@@ -153,7 +92,6 @@ history:{
 "Age of Industrialisation":"pdf/industrialisation.pdf",
 "Print Culture":"pdf/print-culture.pdf"
 },
-
 civics:{
 "Power Sharing":"pdf/power-sharing.pdf",
 "Federalism":"pdf/federalism.pdf",
@@ -161,7 +99,6 @@ civics:{
 "Political Parties":"pdf/political-parties.pdf",
 "Outcomes of Democracy":"pdf/outcomes-democracy.pdf"
 },
-
 geography:{
 "Resources and Development":"pdf/resources-dev.pdf",
 "Forest and Wildlife":"pdf/forest-wildlife.pdf",
@@ -169,9 +106,8 @@ geography:{
 "Agriculture":"pdf/agriculture.pdf",
 "Minerals and Energy":"pdf/minerals-energy.pdf",
 "Manufacturing Industries":"pdf/manufacturing-industries.pdf",
-"lifeline of National Economy":"pdf/national-economy.pdf"
+"Lifeline of National Economy":"pdf/national-economy.pdf"
 },
-
 economics:{
 "Development":"pdf/development.pdf",
 "Sectors of Economy":"pdf/sectors.pdf",
@@ -181,14 +117,10 @@ economics:{
 }
 }
 
-/* ===== LOGIC ===== */
-
 let currentSubject="history";
-let currentChapter="";
 const chapterBox=document.getElementById("chapters");
 const notesBox=document.getElementById("notes");
 
-/* Show subject normally */
 function showSubject(subject,el){
 currentSubject=subject;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("activeTab"));
@@ -196,7 +128,6 @@ el.classList.add("activeTab");
 loadChapters();
 }
 
-/* Load chapters of selected subject */
 function loadChapters(){
 chapterBox.innerHTML="";
 Object.keys(data[currentSubject]).forEach(ch=>{
@@ -208,42 +139,45 @@ chapterBox.appendChild(btn);
 });
 }
 
-/* Show notes */
 function showNotes(ch,subject){
-currentChapter=ch;
-currentSubject=subject;
-
 let pdfPath = data[subject][ch];
-
-notesBox.innerHTML =
-`
+notesBox.innerHTML=`
 <h2>${ch}</h2>
 <h4>${subject.toUpperCase()}</h4>
 
-<iframe src="${pdfPath}" width="100%" height="600px"></iframe>
-
+<div id="pdfContainer">
+<button class="btn" onclick="toggleFullscreen()">📄 Full Screen</button>
 <br><br>
+<iframe id="pdfFrame" src="${pdfPath}" width="100%" height="600px"></iframe>
+</div>
+
+<br>
 <a class="btn downloadBtn" href="${pdfPath}" download>⬇ Download PDF</a>
 `;
 }
 
+/* FULLSCREEN FUNCTION */
+function toggleFullscreen(){
+let elem=document.getElementById("pdfContainer");
+elem.classList.toggle("fullscreenPDF");
+if(!document.fullscreenElement){
+elem.requestFullscreen().catch(()=>{});
+}else{
+document.exitFullscreen();
+}
+}
 
-/* 🌍 GLOBAL SEARCH (All subjects) */
+/* GLOBAL SEARCH */
 document.getElementById("search").addEventListener("input",function(e){
 let term=e.target.value.toLowerCase();
 chapterBox.innerHTML="";
-
-if(term===""){
-loadChapters();
-return;
-}
-
+if(term===""){loadChapters();return;}
 for(let subject in data){
 for(let chapter in data[subject]){
 if(chapter.toLowerCase().includes(term)){
 let btn=document.createElement("button");
 btn.className="chapterBtn";
-btn.innerText=`${chapter}  (${subject})`;
+btn.innerText=`${chapter} (${subject})`;
 btn.onclick=()=>showNotes(chapter,subject);
 chapterBox.appendChild(btn);
 }
@@ -251,24 +185,19 @@ chapterBox.appendChild(btn);
 }
 });
 
-/* Dark mode */
-function toggleDark(){
-document.body.classList.toggle("dark");
-}
-
-/* Download notes */
-function downloadNotes(){
-let text=currentChapter+"\n\n"+data[currentSubject][currentChapter];
-let blob=new Blob([text],{type:"text/plain"});
-let link=document.createElement("a");
-link.href=URL.createObjectURL(blob);
-link.download=currentChapter+".txt";
-link.click();
-}
-
+function toggleDark(){document.body.classList.toggle("dark");}
 loadChapters();
 </script>
 
+<!-- CONTACT + FOOTER -->
+<footer>
+<h3>📞 Contact</h3>
+<p>Email: yourname@gmail.com</p>
+<p>Phone: +91 XXXXX XXXXX</p>
+<br>
+<p>© 2026 Class 10 SST Notes Hub</p>
+<p>Made with ❤️ by Rishabh</p>
+</footer>
 
 </body>
 </html>
